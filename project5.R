@@ -1,6 +1,8 @@
 library(quantmod)
 library(tidyverse)
 library(tidyquant)
+library(ggplot2)
+library(dplyr)
 getSymbols("SPY")
 ema <- EMA(SPY[,c("SPY.Close")], n = 100 )
 
@@ -54,3 +56,18 @@ for (i in 1:nrow(stock_returns)){
 
 performance.2.returns <- cbind(stock_returns[,"date"], performance.2[[1]] - deposits)
 performance.2 <- cbind(stock_returns[,"date"], performance.2)
+
+df1 <- data.frame(dates=performance.1[[1]], total_return=performance.1[[2]])
+df2 <- data.frame(dates=performance.2[[1]], total_return=performance.2[[2]])
+
+df3 <- df1 %>%  mutate(Type = 'EMA TTR') %>% bind_rows(df2 %>% mutate(Type = 'S&P Monthly'))
+
+p <- ggplot(df3,aes(y = total_return,x = dates,color = Type)) + 
+  geom_line() +
+  ggtitle("Total USD Returns over Time")
+
+print("S&P Monthly")
+print(df1, row.names=FALSE)
+print("EMA TTR")
+print(df2, row.names=FALSE)
+
