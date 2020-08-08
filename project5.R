@@ -17,6 +17,7 @@ stock_returns <- stock_prices %>%
                                         col_rename = "value")
 
 portfolio_value <- 0
+deposits <- seq(from = 1000, to = 332000, by = 1000)
 
 performance.1 <- data.frame(matrix(ncol = 1, nrow = 0), stringsAsFactors =  TRUE)
 x <- c("value")
@@ -28,6 +29,7 @@ for (i in 1:nrow(stock_returns)){
   performance.1 <- rbind(performance.1, c( portfolio_value))
 }
 
+performance.1.returns <- cbind(stock_returns[,"date"], performance.1[[1]] - deposits)
 performance.1 <- cbind(stock_returns[,"date"], performance.1)
 
 
@@ -50,4 +52,5 @@ for (i in 1:nrow(stock_returns)){
   performance.2 <- rbind(performance.2, c( portfolio_value))
 }
 
+performance.2.returns <- cbind(stock_returns[,"date"], performance.2[[1]] - deposits)
 performance.2 <- cbind(stock_returns[,"date"], performance.2)
